@@ -1,4 +1,3 @@
-import "./styles.css";
 /*
 1. Get the user's name
 2. Show a menu
@@ -7,20 +6,47 @@ import "./styles.css";
   b. See Leaderboard
   c. Update Name
 */
-const myGameContainer = document.getElementById("game");
 
 class Game {
-  constructor(container) {
-    this.container = container;
+  constructor() {
+    this.welcomeEl = document.getElementById("welcome-text");
+    this.nameInputForm = document.getElementById("name-input");
+    this.btnsContainer = document.getElementById("game-btns-container");
   }
 
   randomNumber() {
     return Math.floor(Math.random() * 10);
   }
 
-  start() {
-    this.name = prompt("Enter your name:") || "Guest";
+  displayUserName = function () {
+    this.welcomeEl.innerHTML = `Welcome, <span>${this.name}</span>`;
+    this.welcomeEl.style.display = "block";
+    this.nameInputForm.style.display = "none";
     this.displayMenu();
+  }.bind(this);
+
+  setUserName = function (e) {
+    e.preventDefault();
+    const username = e.target[0].value.trim();
+    const errorMsgEl = document.querySelector(".error-msg").style;
+    if (username) {
+      errorMsgEl.display = "none";
+      this.name = username;
+      localStorage.setItem("player_name", this.name);
+      this.displayUserName();
+    } else {
+      errorMsgEl.display = "block";
+    }
+  }.bind(this);
+
+  start() {
+    if (!localStorage.getItem("player_name")) {
+      this.nameInputForm.removeEventListener("submit", this.setUserName);
+      this.nameInputForm.addEventListener("submit", this.setUserName);
+    } else {
+      this.name = localStorage.getItem("player_name");
+      this.displayUserName();
+    }
   }
 
   handleMenuClick = function (event) {
@@ -39,14 +65,9 @@ class Game {
   }.bind(this);
 
   displayMenu() {
-    this.container.innerHTML = `Welcome ${this.name},
-    <ol>
-      <li data-val="1">Start New Game</li>
-      <li data-val="2">See Leaderboard</li>
-      <li data-val="3">Update Name</li>
-    </ol>`;
-    this.container.removeEventListener("click", this.handleMenuClick);
-    this.container.addEventListener("click", this.handleMenuClick);
+    this.btnsContainer.style.display = "flex";
+    this.btnsContainer.removeEventListener("click", this.handleMenuClick);
+    this.btnsContainer.addEventListener("click", this.handleMenuClick);
   }
   updateLevel(level = 1) {
     this.generatedNumbers = [];
@@ -69,7 +90,7 @@ class Game {
   getNumbersFromUser() {
     for (let i = 0; i < this.level; i++) {
       let enteredValue = prompt(
-        "Enter values in order one at a time: (press enter after every value)",
+        "Enter values in order one at a time: (press enter after every value)"
       );
       if (enteredValue === "" || enteredValue === null) {
         enteredValue = NaN;
@@ -98,5 +119,5 @@ class Game {
   }
 }
 
-let myGameInstance = new Game(myGameContainer);
+let myGameInstance = new Game();
 myGameInstance.start();

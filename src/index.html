@@ -18,19 +18,33 @@
     <section id="game-input-container">
       <div id="name-container">
         <p id="welcome-text">Welcome, <span>Tejas</span></p>
+        <form id="name-input">
+          <input type="text" name="name" placeholder="Enter your name here" required />
+          <button type="submit">
+            <svg
+              width="37"
+              height="37"
+              viewBox="0 0 27 33"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4.53248 16.0788L2.0004 30.7978L24.7891 16.0788L2.00041 1.35974L4.53248 16.0788ZM4.53248 16.0788L14.6608 16.0788"
+                stroke="white"
+                stroke-width="2.53207"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </form>
+        <p class="error-msg">Enter Valid Username !</p>
       </div>
-
-      <ol>
+      <ol id="game-btns-container">
         <li><button class="gradient-button" data-val="1">Start New Game</button></li>
         <li><button class="gradient-button" data-val="2">See Leaderboard</button></li>
         <li><button class="gradient-button" data-val="3">Update Name</button></li>
       </ol>
     </section>
-    <div id="dialog-container">
-      <dialog>
-        <input type="text" name="" id="user-name" />
-      </dialog>
-    </div>
     <script src="./index.mjs" type="module"></script>
   </body>
 </html>
