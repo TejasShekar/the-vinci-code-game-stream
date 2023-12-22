@@ -14,10 +14,6 @@ class Game {
     this.btnsContainer = document.getElementById("game-btns-container");
   }
 
-  randomNumber() {
-    return Math.floor(Math.random() * 10);
-  }
-
   displayUserName = function () {
     this.welcomeEl.innerHTML = `Welcome, <span>${this.name}</span>`;
     this.welcomeEl.style.display = "block";
@@ -49,11 +45,15 @@ class Game {
     }
   }
 
+  startGame() {
+    this.updateLevel(1);
+    this.gameLoop();
+  }
+
   handleMenuClick = function (event) {
     switch (event.target.dataset?.val) {
       case "1":
-        this.updateLevel(1);
-        this.gameLoop();
+        this.startGame();
         break;
       case "2":
         console.log("Will Show Leaderboard Now...");
@@ -69,10 +69,15 @@ class Game {
     this.btnsContainer.removeEventListener("click", this.handleMenuClick);
     this.btnsContainer.addEventListener("click", this.handleMenuClick);
   }
+
   updateLevel(level = 1) {
     this.generatedNumbers = [];
     this.enteredNumbers = [];
     this.level = level;
+  }
+
+  randomNumber() {
+    return Math.floor(Math.random() * 10);
   }
 
   generateNumbersForLevel() {

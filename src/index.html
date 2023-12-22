@@ -7,9 +7,15 @@
   </head>
 
   <body>
-    <img id="hero-img" src="./assets/hero.png" alt="Hero" />
-    <img id="logo" src="./assets/Logo.svg" alt="logo" />
-
+    <div id="game-logo-container">
+      <img id="hero-img" src="./assets/hero.png" alt="Hero" />
+      <img id="logo" src="./assets/Logo.svg" alt="logo" />
+    </div>
+    <!-- Display Rules at the beginning of the game -->
+    <section id="game-container">
+      <!-- Show numbers based on level count -->
+      <div id="numbers-display"><span>1</span></div>
+    </section>
     <div id="border-container">
       <span>&diamondsuit;</span>
       <span id="border"></span>
@@ -36,6 +42,13 @@
               />
             </svg>
           </button>
+        </form>
+        <form id="game-input">
+          <p>
+            Enter values in order one at a time. Press <space>Enter</space> key after each
+            value
+          </p>
+          <input type="number" name="number" placeholder="Enter the number here" />
         </form>
         <p class="error-msg">Enter Valid Username !</p>
       </div>

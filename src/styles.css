@@ -21,18 +21,27 @@ body {
   font-size: 62.5%;
   background-color: var(--bg-color);
   display: grid;
+  /* grid-template-rows: 1fr 1fr 1fr 1fr; */
   place-items: center;
   align-content: center;
-  height: 100vh;
+  height: 100svh;
+}
+
+#game-logo-container {
+  display: grid;
+  place-items: center;
+  align-content: center;
 }
 
 #hero-img {
-  width: 35%;
+  width: 35vw;
+  transition: width 0.5s linear;
 }
 
 #logo {
   padding: 1rem;
-  width: 40%;
+  width: 40vw;
+  transition: width 0.5s linear;
 }
 
 #welcome-text {
@@ -88,6 +97,10 @@ body {
   transition: stroke 0.15s linear;
 }
 
+#game-input {
+  display: none;
+}
+
 .error-msg {
   display: none;
   position: absolute;
@@ -130,7 +143,7 @@ input {
 }
 
 #game-container {
-  height: 12rem;
+  height: 20svh;
   display: none;
   /* display: flex; */
   align-items: center;
