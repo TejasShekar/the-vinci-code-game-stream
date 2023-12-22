@@ -15,12 +15,19 @@ class Game {
     this.btnsContainer = document.getElementById("game-btns-container");
     this.gameDisplayContainer = document.getElementById("game-container");
     this.numberInputForm = document.getElementById("game-input");
+    this.numberDisplayEl = this.gameDisplayContainer.querySelector(".numbers-display");
+    this.rulesBtn = document.querySelector("#game-instructions button");
+    this.rulesSection = document.querySelector("#game-instructions ul");
+    this.rulesBtn.addEventListener("click", () => {
+      this.rulesSection.classList.toggle("show");
+    });
+    this.gameOverMsg = document.querySelector(".game-end-msg");
 
     // Variables
     this.currDisplayIndex = 0;
     this.generatedNumbers = [];
     this.enteredNumbers = [];
-    this.level = 1;
+    this.level = 0;
   }
 
   displayUserName = function () {
@@ -38,11 +45,11 @@ class Game {
       errorMsgEl.display = "none";
       this.name = username;
       localStorage.setItem("player_name", this.name);
-      this.displayUserName();
+      if (this.level === 0) this.displayUserName();
+      this.nameInputForm.removeEventListener("submit", this.setUserName);
     } else {
       errorMsgEl.display = "block";
     }
-    this.nameInputForm.removeEventListener("submit", this.setUserName);
   }.bind(this);
 
   start() {
@@ -57,6 +64,7 @@ class Game {
   handleMenuClick = function (event) {
     switch (event.target.dataset?.val) {
       case "new_game":
+        this.btnsContainer.removeEventListener("click", this.handleMenuClick);
         this.updateGameState("Start Game");
         break;
       case "see_leaderbaord":
@@ -92,39 +100,28 @@ class Game {
     }
   }.bind(this);
 
-  changeContent = function (element, content) {
-    element.classList.add("fade");
-    setTimeout(() => {
-      element.textContent = content;
-      element.classList.remove("fade");
-    }, 500);
-  };
-
   displayNumber() {
     document.removeEventListener("keydown", this.onEnterKeyPress);
-    const displayEl = this.gameDisplayContainer.querySelector(".numbers-display");
-    this.changeContent(displayEl, this.generatedNumbers[this.currDisplayIndex]);
+    this.numberDisplayEl.classList.add("fade");
+    const currentNumber = this.generatedNumbers[this.currDisplayIndex];
+    setTimeout(() => {
+      this.numberDisplayEl.textContent = currentNumber;
+      this.numberDisplayEl.classList.remove("fade");
+    }, 500);
     this.currDisplayIndex += 1;
     document.addEventListener("keydown", this.onEnterKeyPress);
-  }
-
-  getNumbersFromUser() {
-    for (let i = 0; i < this.level; i++) {
-      let enteredValue = prompt(
-        "Enter values in order one at a time: (press enter after every value)"
-      );
-      if (enteredValue === "" || enteredValue === null) {
-        enteredValue = NaN;
-      }
-      this.enteredNumbers.push(Number(enteredValue));
-    }
   }
 
   verifyLevel() {
     for (let i = 0; i < this.level; i++) {
       if (this.enteredNumbers[i] !== this.generatedNumbers[i]) {
-        console.log("Level Failed");
-        return false;
+        this.numberDisplayEl.style.display = "none";
+        this.gameOverMsg.innerHTML = `<span>GAME OVER.</span> Your Score : ${
+          this.level * 10
+        }`;
+        this.numberInputForm.style.display = "none";
+        this.displayMenu();
+        break;
       }
     }
     this.updateGameState("Update Level");
@@ -139,6 +136,7 @@ class Game {
   }.bind(this);
 
   getEachNumberFromPlayer() {
+    this.numberInputForm.style.visibility = "visible";
     setTimeout(() => {
       this.numberInputForm.children[1].focus();
     }, 100);
@@ -149,8 +147,11 @@ class Game {
     switch (nextState) {
       // Need to use constants as a better practise
       case "Start Game":
+        this.level += 1;
         this.welcomeEl.style.display = "none";
         this.btnsContainer.style.display = "none";
+        this.numberInputForm.style.display = "block";
+        this.numberInputForm.style.visibility = "hidden";
         this.generateNumbersForLevel();
         this.gameDisplayContainer.style.display = "flex";
         this.displayNumber();
@@ -160,15 +161,17 @@ class Game {
           this.displayNumber(this.currDisplayIndex + 1);
         } else {
           document.removeEventListener("keydown", this.onEnterKeyPress);
-          this.numberInputForm.style.display = "initial";
+          this.numberInputForm.style.display = "block";
           this.updateGameState("Wait For Input");
         }
         break;
       case "Wait For Input":
+        this.numberDisplayEl.classList.add("fade");
         if (this.enteredNumbers.length !== this.generatedNumbers.length) {
           this.getEachNumberFromPlayer();
         } else {
-          this.numberInputForm.style.display = "none";
+          this.numberInputForm.style.display = "block";
+          this.numberInputForm.style.visibility = "hidden";
           this.verifyLevel();
         }
         break;

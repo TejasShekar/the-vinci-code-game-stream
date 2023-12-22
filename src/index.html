@@ -5,16 +5,35 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="styles.css" />
   </head>
-
   <body>
+    <section id="game-instructions">
+      <ul>
+        <li>
+          You'll be shown some numbers on the screen. (Press Enter to go through the
+          numbers)
+        </li>
+        <li>
+          Your job is to remember them and type them in order. (Type them one by one, by
+          pressing Enter after each number is typed)
+        </li>
+        <li>
+          If you get it right, the level increases, presenting a new set of numbers as you
+          progress.
+        </li>
+        <li>
+          But be careful, if you make a mistake, the game ends, and you'll see your final
+          score.
+        </li>
+      </ul>
+      <button class="gradient-button">INSTRUCTIONS</button>
+    </section>
     <div id="game-logo-container">
       <img id="hero-img" src="./assets/hero.png" alt="Hero" />
       <img id="logo" src="./assets/Logo.svg" alt="logo" />
     </div>
-    <!-- Display Rules at the beginning of the game -->
     <section id="game-container">
-      <!-- Show numbers based on level count -->
       <div class="numbers-display">1</div>
+      <p class="game-end-msg"></p>
     </section>
     <div id="border-container">
       <span>&diamondsuit;</span>
@@ -22,7 +41,7 @@
       <span>&diamondsuit;</span>
     </div>
     <section id="game-input-container">
-      <div id="name-container">
+      <div id="input-container">
         <p id="welcome-text">Welcome, <span>Tejas</span></p>
         <form id="name-input">
           <input type="text" name="name" placeholder="Enter your name here" required />

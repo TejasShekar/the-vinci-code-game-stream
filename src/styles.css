@@ -13,7 +13,6 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  /* font-family: "Bungee", sans-serif; */
 }
 
 body {
@@ -21,11 +20,51 @@ body {
   font-size: 62.5%;
   background-color: var(--bg-color);
   display: grid;
-  /* grid-template-rows: 1fr 1fr 1fr 1fr; */
   place-items: center;
   align-content: center;
   height: 100svh;
 }
+
+#game-instructions {
+  display: flex;
+  color: var(--primary-color);
+
+  z-index: 1;
+}
+
+#game-instructions ul {
+  transform: translateX(-100%);
+  width: 45svh;
+  position: absolute;
+  top: 2px;
+  left: 0;
+  background-color: var(--bg-color);
+  padding: 1.5rem;
+  font-size: 1.2rem;
+  border: 1px solid gold;
+  border-radius: 10px;
+  line-height: 130%;
+  transition: transform 0.5s ease-in-out;
+}
+
+#game-instructions .show {
+  transform: translateX(20%);
+  transition: transform 0.5s ease-in-out;
+}
+
+#game-instructions button {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  width: min-content;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-size: 1.5rem;
+  border-radius: 0 10px 10px 0;
+  letter-spacing: 4px;
+}
+
+/*  */
 
 #game-logo-container {
   display: grid;
@@ -97,7 +136,7 @@ body {
 
 /* game-input-container */
 
-#name-container {
+#input-container {
   position: relative;
   display: grid;
   place-items: center;
@@ -127,6 +166,7 @@ body {
 
 #game-input {
   display: none;
+  transition: display 0.5s ease-in;
 }
 
 .error-msg {
@@ -138,14 +178,19 @@ body {
   font-size: 1.2rem;
 }
 
+.game-end-msg {
+  color: var(--primary-color);
+  font-size: 4rem;
+}
+
+.game-end-msg span {
+  color: red;
+}
+
 #game-btns-container {
   display: none;
   gap: 1rem;
   padding: 1rem 0;
-}
-
-li {
-  list-style-type: none;
 }
 
 button {
@@ -155,13 +200,16 @@ button {
 
 .gradient-button {
   font-family: "Passero One", sans-serif;
-
   border: none;
   color: white;
   font-size: 1.8rem;
   cursor: pointer;
   border-radius: 2rem;
   background-image: linear-gradient(to bottom, #4ec8e5, #142d43);
+}
+
+.gradient-button:hover {
+  box-shadow: 0 0 10px 5px gold;
 }
 
 input {
