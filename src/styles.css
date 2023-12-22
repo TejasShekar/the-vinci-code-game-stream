@@ -14,10 +14,10 @@
   padding: 0;
   margin: 0;
   /* font-family: "Bungee", sans-serif; */
-  font-family: "Passero One", sans-serif;
 }
 
 body {
+  font-family: "Passero One", sans-serif;
   font-size: 62.5%;
   background-color: var(--bg-color);
   display: grid;
@@ -43,6 +43,34 @@ body {
   width: 40vw;
   transition: width 0.5s linear;
 }
+
+/* Game display container */
+#game-container {
+  height: 20svh;
+  display: none;
+  /* display: flex; */
+  align-items: center;
+}
+
+.numbers-display {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  width: 4rem;
+  height: 4rem;
+  background-color: gold;
+  display: flex;
+  place-content: center;
+  font-size: 3rem;
+  border-radius: 5px;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fade {
+  opacity: 0;
+}
+
+/*  */
 
 #welcome-text {
   display: none;
@@ -126,6 +154,8 @@ button {
 }
 
 .gradient-button {
+  font-family: "Passero One", sans-serif;
+
   border: none;
   color: white;
   font-size: 1.8rem;
@@ -142,22 +172,6 @@ input {
   padding: 5px;
 }
 
-#game-container {
-  height: 20svh;
-  display: none;
-  /* display: flex; */
-  align-items: center;
-}
-
-#numbers-display {
-  width: 4rem;
-  height: 4rem;
-  background-color: gold;
-  display: flex;
-  place-content: center;
-  font-size: 3rem;
-  border-radius: 5px;
-}
 /* -------------- */
 
 @media screen and (max-width: 767px) {

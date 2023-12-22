@@ -14,7 +14,7 @@
     <!-- Display Rules at the beginning of the game -->
     <section id="game-container">
       <!-- Show numbers based on level count -->
-      <div id="numbers-display"><span>1</span></div>
+      <div class="numbers-display">1</div>
     </section>
     <div id="border-container">
       <span>&diamondsuit;</span>
@@ -53,9 +53,17 @@
         <p class="error-msg">Enter Valid Username !</p>
       </div>
       <ol id="game-btns-container">
-        <li><button class="gradient-button" data-val="1">Start New Game</button></li>
-        <li><button class="gradient-button" data-val="2">See Leaderboard</button></li>
-        <li><button class="gradient-button" data-val="3">Update Name</button></li>
+        <li>
+          <button class="gradient-button" data-val="new_game">Start New Game</button>
+        </li>
+        <li>
+          <button class="gradient-button" data-val="see_leaderbaord">
+            See Leaderboard
+          </button>
+        </li>
+        <li>
+          <button class="gradient-button" data-val="update_name">Update Name</button>
+        </li>
       </ol>
     </section>
     <script src="./index.mjs" type="module"></script>

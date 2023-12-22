@@ -9,9 +9,18 @@
 
 class Game {
   constructor() {
+    // Elements
     this.welcomeEl = document.getElementById("welcome-text");
     this.nameInputForm = document.getElementById("name-input");
     this.btnsContainer = document.getElementById("game-btns-container");
+    this.gameDisplayContainer = document.getElementById("game-container");
+    this.numberInputForm = document.getElementById("game-input");
+
+    // Variables
+    this.currDisplayIndex = 0;
+    this.generatedNumbers = [];
+    this.enteredNumbers = [];
+    this.level = 1;
   }
 
   displayUserName = function () {
@@ -33,11 +42,11 @@ class Game {
     } else {
       errorMsgEl.display = "block";
     }
+    this.nameInputForm.removeEventListener("submit", this.setUserName);
   }.bind(this);
 
   start() {
     if (!localStorage.getItem("player_name")) {
-      this.nameInputForm.removeEventListener("submit", this.setUserName);
       this.nameInputForm.addEventListener("submit", this.setUserName);
     } else {
       this.name = localStorage.getItem("player_name");
@@ -45,22 +54,19 @@ class Game {
     }
   }
 
-  startGame() {
-    this.updateLevel(1);
-    this.gameLoop();
-  }
-
   handleMenuClick = function (event) {
     switch (event.target.dataset?.val) {
-      case "1":
-        this.startGame();
+      case "new_game":
+        this.updateGameState("Start Game");
         break;
-      case "2":
+      case "see_leaderbaord":
         console.log("Will Show Leaderboard Now...");
         break;
-      case "3":
-        this.name = prompt("Enter name to be updated:") || "Guest";
-        this.displayMenu();
+      case "update_name":
+        this.welcomeEl.style.display = "none";
+        this.btnsContainer.style.display = "none";
+        this.nameInputForm.style.display = "flex";
+        this.nameInputForm.addEventListener("submit", this.setUserName);
     }
   }.bind(this);
 
@@ -68,12 +74,6 @@ class Game {
     this.btnsContainer.style.display = "flex";
     this.btnsContainer.removeEventListener("click", this.handleMenuClick);
     this.btnsContainer.addEventListener("click", this.handleMenuClick);
-  }
-
-  updateLevel(level = 1) {
-    this.generatedNumbers = [];
-    this.enteredNumbers = [];
-    this.level = level;
   }
 
   randomNumber() {
@@ -86,10 +86,26 @@ class Game {
     }
   }
 
-  displayNumbersForLevel() {
-    for (let i = 0; i < this.level; i++) {
-      alert(this.generatedNumbers[i]);
+  onEnterKeyPress = function (e) {
+    if (e.key === "Enter") {
+      this.updateGameState("Display Next Number");
     }
+  }.bind(this);
+
+  changeContent = function (element, content) {
+    element.classList.add("fade");
+    setTimeout(() => {
+      element.textContent = content;
+      element.classList.remove("fade");
+    }, 500);
+  };
+
+  displayNumber() {
+    document.removeEventListener("keydown", this.onEnterKeyPress);
+    const displayEl = this.gameDisplayContainer.querySelector(".numbers-display");
+    this.changeContent(displayEl, this.generatedNumbers[this.currDisplayIndex]);
+    this.currDisplayIndex += 1;
+    document.addEventListener("keydown", this.onEnterKeyPress);
   }
 
   getNumbersFromUser() {
@@ -106,20 +122,67 @@ class Game {
 
   verifyLevel() {
     for (let i = 0; i < this.level; i++) {
-      if (this.enteredNumbers[i] !== this.generatedNumbers[i]) return false;
+      if (this.enteredNumbers[i] !== this.generatedNumbers[i]) {
+        console.log("Level Failed");
+        return false;
+      }
     }
-    return true;
+    this.updateGameState("Update Level");
   }
 
-  gameLoop() {
-    this.generateNumbersForLevel();
-    this.displayNumbersForLevel();
-    this.getNumbersFromUser();
-    if (this.verifyLevel()) {
-      this.updateLevel(this.level + 1);
-      this.gameLoop();
-    } else {
-      alert(`Your score is: ${this.level}`);
+  getInputValue = function (e) {
+    e.preventDefault();
+    this.enteredNumbers.push(Number(e.target[0].value));
+    e.target[0].value = "";
+    this.numberInputForm.removeEventListener("submit", this.getInputValue);
+    this.updateGameState("Wait For Input");
+  }.bind(this);
+
+  getEachNumberFromPlayer() {
+    setTimeout(() => {
+      this.numberInputForm.children[1].focus();
+    }, 100);
+    this.numberInputForm.addEventListener("submit", this.getInputValue);
+  }
+
+  updateGameState(nextState) {
+    switch (nextState) {
+      // Need to use constants as a better practise
+      case "Start Game":
+        this.welcomeEl.style.display = "none";
+        this.btnsContainer.style.display = "none";
+        this.generateNumbersForLevel();
+        this.gameDisplayContainer.style.display = "flex";
+        this.displayNumber();
+        break;
+      case "Display Next Number":
+        if (this.generatedNumbers.length !== this.currDisplayIndex) {
+          this.displayNumber(this.currDisplayIndex + 1);
+        } else {
+          document.removeEventListener("keydown", this.onEnterKeyPress);
+          this.numberInputForm.style.display = "initial";
+          this.updateGameState("Wait For Input");
+        }
+        break;
+      case "Wait For Input":
+        if (this.enteredNumbers.length !== this.generatedNumbers.length) {
+          this.getEachNumberFromPlayer();
+        } else {
+          this.numberInputForm.style.display = "none";
+          this.verifyLevel();
+        }
+        break;
+      case "Update Level":
+        this.level += 1;
+        this.generatedNumbers = [];
+        this.enteredNumbers = [];
+        this.currDisplayIndex = 0;
+        this.generateNumbersForLevel();
+        this.gameDisplayContainer.style.display = "flex";
+        this.displayNumber();
+        break;
+      default:
+        break;
     }
   }
 }
