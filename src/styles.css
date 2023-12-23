@@ -28,7 +28,6 @@ body {
 #game-instructions {
   display: flex;
   color: var(--primary-color);
-
   z-index: 1;
 }
 
@@ -64,8 +63,6 @@ body {
   letter-spacing: 4px;
 }
 
-/*  */
-
 #game-logo-container {
   display: grid;
   place-items: center;
@@ -84,10 +81,10 @@ body {
 }
 
 /* Game display container */
+
 #game-container {
   height: 20svh;
   display: none;
-  /* display: flex; */
   align-items: center;
 }
 
@@ -108,8 +105,6 @@ body {
 .fade {
   opacity: 0;
 }
-
-/*  */
 
 #welcome-text {
   display: none;
@@ -144,12 +139,8 @@ body {
 
 #name-input {
   display: flex;
-  /* display: none; */
   width: fit-content;
   margin: 0 auto;
-  /* background-color: white; */
-  /* border: 1px solid transparent;
-  border-radius: 10px; */
 }
 
 #name-input button {
